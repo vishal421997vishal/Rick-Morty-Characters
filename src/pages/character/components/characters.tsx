@@ -55,12 +55,20 @@ const Characters: React.FC = () => {
           return (
             <Link to={`/character/${character.id}`} key={character.id}>
               <div
-                className="relative overflow-hidden border-4 border-black bg-white shadow-md hover:scale-105 transition-transform cursor-pointer">
+                className="group relative overflow-hidden border-4 border-black bg-white shadow-md hover:scale-105 transition-transform cursor-pointer">
                 <img src={character.image} alt={character.name} className="w-full"/>
+
                 <div
-                  className="absolute inset-0 bg-black bg-opacity-60 opacity-0 hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-2">
+                  className="absolute bottom-0 right-0 text-sm sm:text-base font-bold italic shadow text-right z-10 group-hover:opacity-0 transition-opacity duration-300">
+                  <p className="bg-white px-2 py-1 border-t-2 border-l-2 border-gray-500">
+                    {character.name}
+                  </p>
+                </div>
+
+                <div
+                  className="absolute inset-0 bg-black bg-opacity-60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-2 z-20">
                   <span
-                    className="absolute top-1 right-1 bg-white text-xs sm:text-sm px-1 py-[2px] rounded shadow text-gray-700 font-medium">
+                    className="absolute top-0 right-0 bg-white text-xs sm:text-sm px-1 py-[2px] rounded text-gray-700 font-medium">
                     {createdDate}
                   </span>
                   <p className="text-white text-lg sm:text-xl font-bold italic">{character.name}</p>
@@ -69,6 +77,7 @@ const Characters: React.FC = () => {
                   </p>
                 </div>
               </div>
+
             </Link>
           );
         })}
