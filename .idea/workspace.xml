@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1a50333b-d31d-4883-9b6d-5b2adafa6c7d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/img.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/img.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/img_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/img_1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/character/components/characterDetails.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/character/components/characterDetails.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/character/components/characters.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/character/components/characters.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +37,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/vishal/vishal/rick-and-morty&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/vishal/vishal/rick-and-morty-demo&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -75,7 +70,12 @@
       <updated>1743616485445</updated>
       <workItem from="1743616486478" duration="13491000" />
       <workItem from="1743657494058" duration="300000" />
-      <workItem from="1743694801837" duration="3692000" />
+      <workItem from="1743694801837" duration="4182000" />
+      <workItem from="1743735406679" duration="2316000" />
+      <workItem from="1743738223107" duration="19000" />
+      <workItem from="1743740979907" duration="1142000" />
+      <workItem from="1743743415809" duration="1383000" />
+      <workItem from="1743787162849" duration="10397000" />
     </task>
     <servers />
   </component>
