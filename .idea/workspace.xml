@@ -37,7 +37,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/vishal/vishal/rick-and-morty-demo&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/vishal/vishal/rick-and-morty&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -75,7 +75,9 @@
       <workItem from="1743738223107" duration="19000" />
       <workItem from="1743740979907" duration="1142000" />
       <workItem from="1743743415809" duration="1383000" />
-      <workItem from="1743787162849" duration="10397000" />
+      <workItem from="1743787162849" duration="11002000" />
+      <workItem from="1744612693439" duration="626000" />
+      <workItem from="1744691917342" duration="48000" />
     </task>
     <servers />
   </component>
