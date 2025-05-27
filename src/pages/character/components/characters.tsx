@@ -1,8 +1,8 @@
-import React, {useEffect, useMemo, useState, useCallback} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useFetchCharactersApi} from '../services/useCharacterApi';
 import {Character} from '../../../core/interface/CharacterInterface';
 import {useInView} from 'react-intersection-observer';
-import {Spinner, TextInput, Button} from 'flowbite-react';
+import {Button, TextInput} from 'flowbite-react';
 import {Link} from 'react-router-dom';
 import {debounce} from 'lodash';
 import {FaArrowUp} from 'react-icons/fa';
