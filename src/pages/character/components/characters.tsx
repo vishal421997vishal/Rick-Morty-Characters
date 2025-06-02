@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState, useRef} from 'react';
 import {useFetchCharactersApi} from '../services/useCharacterApi';
 import {Character} from '../../../core/interface/CharacterInterface';
 import {useInView} from 'react-intersection-observer';
 import {Button, TextInput} from 'flowbite-react';
 import {Link} from 'react-router-dom';
 import {debounce} from 'lodash';
-import {FaArrowUp} from 'react-icons/fa';
+import {FaArrowUp, FaExclamationTriangle} from 'react-icons/fa';
 
 const CharacterSkeleton = () => (
   <div className="group relative overflow-hidden border-4 border-black bg-white shadow-md hover:scale-105 transition-all duration-300 hover:shadow-xl cursor-pointer">
@@ -47,9 +47,23 @@ const Characters: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>('');
   const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const characterGridRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const {data, isLoading} = useFetchCharactersApi(page);
+  const {data, isLoading, error: apiError, isError} = useFetchCharactersApi(page);
   const {ref, inView} = useInView();
+
+  const filteredCharacters = useMemo(() => {
+    return allCharacters.filter((char) =>
+      char.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [search, allCharacters]);
+
+  useEffect(() => {
+    if (page === 1) {
+      setAllCharacters([]);
+    }
+  }, [page]);
 
   useEffect(() => {
     if (data?.results) {
@@ -57,6 +71,12 @@ const Characters: React.FC = () => {
       setError('');
     }
   }, [data]);
+
+  useEffect(() => {
+    if (apiError) {
+      setError(apiError instanceof Error ? apiError.message : 'Failed to load characters');
+    }
+  }, [apiError]);
 
   useEffect(() => {
     if (inView && !isLoading && data?.info.next) {
@@ -95,18 +115,14 @@ const Characters: React.FC = () => {
     debouncedSearch(value);
   };
 
-  const filteredCharacters = useMemo(() => {
-    return allCharacters.filter((char) =>
-      char.name.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [search, allCharacters]);
-
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="sticky top-0 z-20 bg-black/40 text-white py-4 mb-4 backdrop-blur-sm transition-all duration-300">
-        <h1 className="text-3xl font-bold text-center hover:scale-105 transition-transform">
-          Rick & Morty Characters
-        </h1>
+        <div className="running-text-container overflow-hidden">
+          <h1 className="text-3xl font-bold text-center hover:scale-105 transition-transform running-text">
+            Rick & Morty Characters
+          </h1>
+        </div>
         <div className="mt-4 max-w-md mx-auto px-4">
           <TextInput
             id="search"
@@ -114,42 +130,57 @@ const Characters: React.FC = () => {
             value={inputValue}
             onChange={handleSearchChange}
             placeholder="Search characters..."
-            className="w-full transition-all duration-300 hover:shadow-lg"
+            className="w-full transition-all duration-300 hover:shadow-lg animate-fade-in typing-placeholder"
             sizing="md"
           />
         </div>
       </div>
 
       {error && (
-        <div className="text-red-500 text-center py-2 bg-red-100 mb-4">
-          {error}
+        <div className="text-red-500 text-center py-4 bg-red-100 mb-4 animate-shake flex items-center justify-center gap-2">
+          <FaExclamationTriangle />
+          <span>{error}</span>
         </div>
       )}
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 px-5">
-        {isLoading && page === 1 ? (
-          Array.from({length: 10}).map((_, index) => (
-            <div key={index}>
+      {isLoading && page === 1 ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 px-5">
+          {Array.from({length: 10}).map((_, index) => (
+            <div key={index} className="character-card">
               <CharacterSkeleton />
             </div>
-          ))
-        ) : (
-          filteredCharacters.map((character) => {
+          ))}
+        </div>
+      ) : isError ? (
+        <div className="text-center py-8">
+          <p className="text-gray-600 text-lg">Failed to load characters. Please try again later.</p>
+          <Button
+            color="gray"
+            className="mt-4"
+            onClick={() => window.location.reload()}
+          >
+            Retry
+          </Button>
+        </div>
+      ) : allCharacters.length === 0 ? (
+        <div className="text-center py-8">
+          <p className="text-gray-600 text-lg">No characters found. Please try again later.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 px-5">
+          {filteredCharacters.map((character, index) => {
             const createdDate = new Date(character.created).toLocaleDateString();
 
             return (
               <Link
                 to={`/character/${character.id}`}
                 key={character.id}
-                className="transform-gpu"
+                className="character-card floating"
+                style={{
+                  animationDelay: `${index * 50}ms`
+                }}
               >
-                <div
-                  className="group relative overflow-hidden border-4 border-black bg-white shadow-md hover:scale-105 transition-all duration-300 hover:shadow-xl cursor-pointer"
-                  style={{
-                    opacity: 0,
-                    animation: 'fadeIn 0.5s ease-in forwards'
-                  }}
-                >
+                <div className="group relative overflow-hidden border-4 border-black bg-white shadow-md hover:scale-105 transition-all duration-300 hover:shadow-xl cursor-pointer">
                   <img
                     src={character.image}
                     alt={character.name}
@@ -172,7 +203,7 @@ const Characters: React.FC = () => {
                     </p>
                     <p className="text-white text-sm sm:text-md flex items-center gap-2">
                       <span
-                        className={`w-2 h-2 rounded-full ${
+                        className={`w-2 h-2 rounded-full pulse ${
                           character.status === 'Alive'
                             ? 'bg-green-500'
                             : character.status === 'Dead'
@@ -186,12 +217,12 @@ const Characters: React.FC = () => {
                 </div>
               </Link>
             );
-          })
-        )}
-      </div>
+          })}
+        </div>
+      )}
 
       <div ref={ref} className="h-12 flex items-center justify-center mt-4">
-        {isLoading ? (
+        {isLoading && page > 1 ? (
           <div className="flex items-center gap-2 text-gray-600">
             <div className="animate-pulse flex items-center gap-3">
               <div className="h-8 w-8 bg-gray-200 rounded-full" />
@@ -199,7 +230,7 @@ const Characters: React.FC = () => {
             </div>
           </div>
         ) : (
-          !data?.info.next && (
+          !data?.info.next && allCharacters.length > 0 && (
             <p className="text-gray-400 animate-fade-in">No more characters</p>
           )
         )}
@@ -207,7 +238,7 @@ const Characters: React.FC = () => {
 
       {showScrollTop && (
         <Button
-          className="fixed bottom-8 right-8 rounded-full p-3 bg-purple-600 hover:bg-purple-700 transition-all duration-300 animate-bounce"
+          className="fixed bottom-8 right-8 rounded-full p-3 bg-purple-600 hover:bg-purple-700 transition-all duration-300 hover:scale-110 floating-button"
           onClick={scrollToTop}
         >
           <FaArrowUp className="text-xl" />
@@ -218,6 +249,15 @@ const Characters: React.FC = () => {
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+
+        .character-card {
+          opacity: 0;
+          animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .animate-fade-in {
+          animation: fadeIn 0.5s ease-out forwards;
         }
       `}</style>
     </div>
